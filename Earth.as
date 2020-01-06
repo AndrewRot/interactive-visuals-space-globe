@@ -22,6 +22,8 @@
 		private var ROLLING = "ROLLING";
 		private var rolling: Boolean = false;
 		private var rollingSpeed: Number = 0;
+		private var rollingClockwise: Boolean = true;
+
 
 		//  1-9 modifier keys
 		private var intensityKey: Number = 53; // 53 = 5 => is middle key
@@ -119,9 +121,24 @@
 					key == 52  || key == 53  || key == 54  || key == 55  ||
 					key == 56  || key == 57 || key == 48) {
 						this.intensityKey = key;
+						
+						
+						
+				// if key is 48 (switch) direction
+				if (key == 48) {
+					trace(this.rollingClockwise);
+					this.rollingClockwise = this.rollingClockwise ? false : true;
+					trace(this.rollingClockwise);
+				}
+				var rollDirectionPreserver = rollingClockwise ? 1 : -1;
+				 
+				// Preserve the same direction for all other keys with above variable
+
+						
 				// take the max of the keys pressed between key codes 49-57, 48 = 0
-				var multiplier: Number = key == 48 ? this.intensityMultiplier * -1 : key - 48; // turn 0 into 10 intensity, otherwise standarize key between 1-10 for intensity
-				this.intensityMultiplier = multiplier; // 0 = reverse speed
+				var multiplier: Number = key == 48 ? this.intensityMultiplier * -1 : (key - 48) * rollDirectionPreserver; // turn 0 into 10 intensity, otherwise standarize key between 1-10 for intensity
+				//var multiplier: Number = key == 48 ? this.intensityMultiplier * -1 : key - 48; // turn 0 into 10 intensity, otherwise standarize key between 1-10 for intensity
+				this.intensityMultiplier = multiplier; // * -1 = reverse speed
 				//trace('e.keyCode: ' + e.keyCode + ' -> multiplier: ' + multiplier);
 			}
 
@@ -155,8 +172,9 @@
 			if (actions[this.SCALING]) {
 				this.scaleSpeed *= intensityMultiplier;
 			}
-			if (actions[this.ROLLING]) {
+			if (actions[this.ROLLING]) { // DOTO boolean condition check is probably faster than array indexing..?
 				this.rollingSpeed = .5 * intensityMultiplier;
+				trace(rollingSpeed);
 			}
 			
 			// e - reset back to original properties
