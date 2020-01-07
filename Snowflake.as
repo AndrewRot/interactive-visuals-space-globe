@@ -45,7 +45,7 @@
 
 			var stageObject: Stage = this.stage as Stage;
 			maxWidth = stageObject.stageWidth + 300;
-			maxHeight = stageObject.stageHeight + 200;
+			maxHeight = stageObject.stageHeight + 100;
 
 			this.x = Math.random() * maxWidth;
 			this.y = Math.random() * maxHeight;
@@ -131,8 +131,13 @@
 			this.x += radius * Math.cos(xPos);
 			this.y += ySpeed;
 
+			// Determine if too far offscreen - regenerate it
 			if (this.y - this.height > maxHeight) {
 				this.y = -10 - this.height;
+				this.x = Math.random() * maxWidth;
+			}
+			if (this.y < -100) {
+				this.y = this.height + maxHeight;
 				this.x = Math.random() * maxWidth;
 			}
 		}
